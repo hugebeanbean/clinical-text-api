@@ -1,29 +1,13 @@
-from src.extract import extract_age
+from src.extract import extract_medication_dose
 
 
-def test_extract_age_simple():
-    assert extract_age("Patient is a 45-year-old male") == 45
+def test_dose_twice_daily():
+    assert extract_medication_dose("500mg twice daily") == "500mg twice daily"
 
 
-def test_extract_age_none():
-    assert extract_age("No age mentioned") is None
+def test_dose_once_daily():
+    assert extract_medication_dose("take 250 mg once daily") == "250mg once daily"
 
 
-def test_extract_age_missing():
-    assert extract_age("No age mentioned here") is None
-
-
-def test_extract_age_with_space():
-    assert extract_age("a 60 year old female") == 60
-
-
-def test_extract_age_empty():
-    assert extract_age("") is None
-
-
-def test_extract_age_at_start():
-    assert extract_age("72-year-old with epilepsy") == 72
-
-
-def test_extract_age_impossible():
-    assert extract_age("250 year old male") == None
+def test_dose_missing():
+    assert extract_medication_dose("patient reports fatigue") is None
