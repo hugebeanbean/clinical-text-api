@@ -9,6 +9,9 @@ app = FastAPI(title="Clinical Text API")
 class ExtractRequest(BaseModel):
     text: str
 
+class ExtractResponse(BaseModel):
+    age: int | None
+    medication_dose: str | None
 
 @app.get("/")
 def read_root() -> dict:
@@ -16,10 +19,10 @@ def read_root() -> dict:
     return {"status": "ok"}
 
 
-@app.post("/extract")
-def extract(request: ExtractRequest) -> dict:
+@app.post("/extract", response_model=ExtractResponse)
+def extract(request: ExtractRequest) -> ExtractResponse:
     """Extract structured fields from clinical text."""
-    return {
-        "age": extract_age(request.text),
-        "medication_dose": extract_medication_dose(request.text),
-    }
+    return ExtractResponse(
+        age=extract_age(request.text),
+        medication_dose=extract_medication_dose(request.text),
+    )
